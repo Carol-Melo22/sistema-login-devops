@@ -1,7 +1,8 @@
-from flask import Flask
+from flask import Flask 
+import os
 
 app = Flask(__name__)
-
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "fallback-key")
 @app.route("/")
 def home():
     return "Sistema de Login funcionando!"
