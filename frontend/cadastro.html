@@ -1,0 +1,8 @@
+<h2>Cadastro</h2>
+<form method="POST">
+    <input name="username" placeholder="Novo Usuário" required>
+    <input name="password" type="password" placeholder="Nova Senha" required>
+    <button type="submit">Cadastrar</button>
+</form>
+{% if erro %}<p style="color:red">{{ erro }}</p>{% endif %}
+<p><a href="{{ url_for('login') }}">Já tenho conta</a></p>
