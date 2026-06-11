@@ -1,0 +1,142 @@
+INDEX.HTML
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Login</h2>
+
+    <form id="loginForm">
+        <input name="username" id="username" placeholder="Usuário" required>
+
+        <input name="password"
+               id="password"
+               type="password"
+               placeholder="Senha"
+               required>
+
+        <button type="submit">Entrar</button>
+    </form>
+
+    <p id="erro" class="erro" style="display:none;"></p>
+
+    <br>
+    <p><a href="{{ url_for('register') }}">Criar nova conta</a></p>
+</div>
+
+<script>
+document.getElementById('loginForm').onsubmit = async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const erroElement = document.getElementById('erro');
+
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            window.location.href = '/sucesso';
+        } else {
+            erroElement.textContent = data.message || 'Erro ao realizar login';
+            erroElement.style.display = 'block';
+        }
+    } catch (err) {
+        erroElement.textContent = 'Erro de conexão com o servidor';
+        erroElement.style.display = 'block';
+    }
+};
+</script> 
+</body>
+</html>
+
+----------------------------------------------------------------------
+CADASTRO.HTML
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Criar Conta</h2>
+
+    <form method="POST">
+        <input name="username"
+               placeholder="Novo Usuário"
+               required>
+
+        <input name="password"
+               type="password"
+               placeholder="Nova Senha"
+               required>
+
+        <button type="submit">
+            Cadastrar
+        </button>
+    </form>
+
+    {% if erro %}
+        <p class="erro">{{ erro }}</p>
+    {% endif %}
+
+    <br>
+
+    <p>
+        <a href="{{ url_for('main.login') }}">
+            Já tenho conta
+        </a>
+    </p>
+</div>
+
+</body>
+</html>
+
+------------------------------------------------------------------------
+SUCESSO.HTML
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sucesso</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div style="text-align: center;">
+        <div class="emoji">👍</div>
+        <h2>Bem-vindo, {{ usuario }}!</h2>
+        <p><a href="{{ url_for('logout') }}">Sair do sistema</a></p>
+    </div>
+</body>
+<style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+            font-family: Arial, sans-serif;
+        }
+        .emoji {
+            font-size: 100px;
+        }
+    </style>
+</html>
+
