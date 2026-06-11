@@ -13,7 +13,7 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/")
 def home():
-    return "Sistema de Login funcionando!"
+    return redirect(url_for('main.login'))
 
 @main_bp.route("/login", methods=["GET", "POST"])
 def login():
